@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { WorkbookView } from './components/WorkbookView';
@@ -7,12 +7,14 @@ import { EvolutionCard } from './components/EvolutionCard';
 import { AiAssistantModal } from './components/AiAssistantModal';
 import { LoginScreen } from './components/LoginScreen';
 import { ClearDataModal } from './components/ClearDataModal';
+import { ModuleTabsNav } from './components/ModuleTabsNav';
 import {
   PONTE_MODULES,
-  initialFieldValues,
-  initialChecksValues,
+  EMPTY_WORKBOOK_FIELDS,
+  EMPTY_WORKBOOK_CHECKS,
+  demoExampleFields,
+  demoExampleChecks,
   initialRemindersList,
-  initialUserProfileData,
 } from './data/initialData';
 import { ReminderItem, UserProfile } from './types';
 import { Sparkles, Award, RotateCcw, Download, Save, ShieldCheck, Printer, FileText, Check, Loader2 } from 'lucide-react';
@@ -35,43 +37,56 @@ export default function App() {
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
   const [lastSavedTime, setLastSavedTime] = useState<string>('Salvo automaticamente');
 
+  // Ref to scroll main container to top on module switch
+  const mainScrollRef = useRef<HTMLDivElement>(null);
+
   // Multi-tenant student storage keys
   const userKey = currentUser ? currentUser.email.replace(/[^a-zA-Z0-9]/g, '_') : 'guest';
 
-  // Per-student persistence states
+  // Per-student persistence states - clean by default for new users!
   const [fields, setFields] = useState<Record<string, string>>(() => {
     try {
-      const saved = localStorage.getItem(`ponte_fields_${userKey}`);
-      if (saved) return JSON.parse(saved);
-      // Fallback or demo initial
-      const legacySaved = localStorage.getItem('ponte_fields_v2');
-      return legacySaved ? JSON.parse(legacySaved) : initialFieldValues;
+      if (currentUser) {
+        const saved = localStorage.getItem(`ponte_fields_${userKey}`);
+        if (saved) return JSON.parse(saved);
+      }
+      return EMPTY_WORKBOOK_FIELDS;
     } catch {
-      return initialFieldValues;
+      return EMPTY_WORKBOOK_FIELDS;
     }
   });
 
   const [checks, setChecks] = useState<Record<string, Record<number, boolean>>>(() => {
     try {
-      const saved = localStorage.getItem(`ponte_checks_${userKey}`);
-      if (saved) return JSON.parse(saved);
-      const legacySaved = localStorage.getItem('ponte_checks_v2');
-      return legacySaved ? JSON.parse(legacySaved) : initialChecksValues;
+      if (currentUser) {
+        const saved = localStorage.getItem(`ponte_checks_${userKey}`);
+        if (saved) return JSON.parse(saved);
+      }
+      return EMPTY_WORKBOOK_CHECKS;
     } catch {
-      return initialChecksValues;
+      return EMPTY_WORKBOOK_CHECKS;
     }
   });
 
   const [reminders, setReminders] = useState<ReminderItem[]>(() => {
     try {
-      const saved = localStorage.getItem(`ponte_reminders_${userKey}`);
-      if (saved) return JSON.parse(saved);
-      const legacySaved = localStorage.getItem('ponte_reminders_v2');
-      return legacySaved ? JSON.parse(legacySaved) : initialRemindersList;
+      if (currentUser) {
+        const saved = localStorage.getItem(`ponte_reminders_${userKey}`);
+        if (saved) return JSON.parse(saved);
+      }
+      return initialRemindersList;
     } catch {
       return initialRemindersList;
     }
   });
+
+  // Whenever activeModuleId changes, scroll instantly to the top
+  useEffect(() => {
+    if (mainScrollRef.current) {
+      mainScrollRef.current.scrollTo({ top: 0, behavior: 'instant' });
+    }
+    window.scrollTo(0, 0);
+  }, [activeModuleId]);
 
   // Whenever student changes, load their dedicated dataset
   useEffect(() => {
@@ -83,20 +98,15 @@ export default function App() {
       if (savedFields) {
         setFields(JSON.parse(savedFields));
       } else {
-        // Inicializa com dados limpos ou o nome do aluno já no Ponto de Partida
-        setFields((prev) => ({
-          ...initialFieldValues,
-          m0_cargo: prev.m0_cargo || 'Analista de Logística',
-          m0_empresa: prev.m0_empresa || '',
-          m0_alvo: prev.m0_alvo || 'Supervisor de Operações',
-        }));
+        // Novo aluno: sempre começa com diário limpo e vazio para preencher!
+        setFields(EMPTY_WORKBOOK_FIELDS);
       }
 
       const savedChecks = localStorage.getItem(`ponte_checks_${currentKey}`);
       if (savedChecks) {
         setChecks(JSON.parse(savedChecks));
       } else {
-        setChecks(initialChecksValues);
+        setChecks(EMPTY_WORKBOOK_CHECKS);
       }
 
       const savedReminders = localStorage.getItem(`ponte_reminders_${currentKey}`);
@@ -142,6 +152,8 @@ export default function App() {
     if (window.confirm('Deseja realmente sair da sua conta de aluno? Suas respostas permanecerão salvas com segurança.')) {
       localStorage.removeItem('ponte_current_student');
       setCurrentUser(null);
+      setFields(EMPTY_WORKBOOK_FIELDS);
+      setChecks(EMPTY_WORKBOOK_CHECKS);
     }
   };
 
@@ -218,20 +230,13 @@ export default function App() {
   };
 
   const handleResetAllData = () => {
-    const cleanFields: Record<string, string> = {
-      m0_cargo: '',
-      m0_tempo: '',
-      m0_empresa: '',
-      m0_alvo: '',
-      m0_data: '',
-    };
-    setFields(cleanFields);
-    setChecks({});
+    setFields(EMPTY_WORKBOOK_FIELDS);
+    setChecks(EMPTY_WORKBOOK_CHECKS);
   };
 
   const handleLoadExampleData = () => {
-    setFields(initialFieldValues);
-    setChecks(initialChecksValues);
+    setFields(demoExampleFields);
+    setChecks(demoExampleChecks);
   };
 
   // Export JSON Backup
@@ -319,10 +324,10 @@ export default function App() {
         />
 
         {/* Scrollable Body */}
-        <main className="flex-1 overflow-y-auto p-3.5 sm:p-6 lg:p-7 custom-scrollbar">
+        <main ref={mainScrollRef} className="flex-1 overflow-y-auto p-3.5 sm:p-6 lg:p-7 custom-scrollbar">
           <div className="max-w-6xl mx-auto">
             {/* Top contextual status bar */}
-            <div className="no-print mb-5 flex flex-wrap items-center justify-between gap-3 bg-white px-4 py-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
+            <div className="no-print mb-4 flex flex-wrap items-center justify-between gap-3 bg-white px-4 py-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-xs font-semibold text-slate-800">
@@ -374,6 +379,13 @@ export default function App() {
                 </button>
               </div>
             </div>
+
+            {/* Quick Module Tabs Navigation (Always visible in mobile, tablet and desktop) */}
+            <ModuleTabsNav
+              activeModuleId={activeModuleId}
+              onSelectModule={setActiveModuleId}
+              fields={fields}
+            />
 
             {/* Layout Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">

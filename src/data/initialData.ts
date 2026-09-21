@@ -66,7 +66,86 @@ export const PONTE_MODULES: PonteModuleMeta[] = [
   }
 ];
 
-export const initialFieldValues: Record<string, string> = {
+export const EMPTY_WORKBOOK_FIELDS: Record<string, string> = {
+  m0_cargo: '',
+  m0_tempo: '',
+  m0_empresa: '',
+  m0_alvo: '',
+  m0_data: '',
+
+  m1_descricao: '',
+  m1_auto1: '',
+  m1_auto2: '',
+  m1_auto3: '',
+  m1_sit1: '',
+  m1_sit2: '',
+  m1_sit3: '',
+  m1_sit4: '',
+  m1_sit5: '',
+
+  m2_ent1a: '',
+  m2_ent1b: '',
+  m2_ent2a: '',
+  m2_ent2b: '',
+  m2_ent3a: '',
+  m2_ent3b: '',
+  m2_map1: '',
+  m2_map2: '',
+  m2_map3: '',
+  m2_map4: '',
+  m2_map5: '',
+  m2_map6: '',
+  m2_alav1: '',
+  m2_alav2: '',
+  m2_alav3: '',
+  m2_alav4: '',
+  m2_alav5: '',
+  m2_mci: '',
+  m2_cx1: '',
+  m2_cx2: '',
+  m2_cx3: '',
+  m2_cx4: '',
+  m2_pct: '',
+  m2_deleg: '',
+
+  m3_r1: '',
+  m3_r2: '',
+  m3_r3: '',
+  m3_prob: '',
+  m3_futuro: '',
+  m3_assunto: '',
+  m3_reacao: '',
+  m3_mes: '',
+  m3_indicadores: '',
+
+  m4_doc_rotina: '',
+  m4_doc_check: '',
+  m4_doc_pop: '',
+  m4_sessao_pessoa: '',
+  m4_sessao_data: '',
+  m4_sessao_reacao: '',
+  m4_treino_tema: '',
+
+  m5_dec1_nome: '',
+  m5_dec1_avalia: '',
+  m5_dec2_nome: '',
+  m5_dec2_avalia: '',
+  m5_dec3_nome: '',
+  m5_dec3_avalia: '',
+  m5_conv_data: '',
+  m5_conv_metas: '',
+  m5_conv_prazo: '',
+  m5_cenario: '',
+  m5_conv_material: '',
+  m5_plano90: '',
+};
+
+export const EMPTY_WORKBOOK_CHECKS: Record<string, Record<number, boolean>> = {
+  m1_check: {},
+  m4_check: {},
+};
+
+export const demoExampleFields: Record<string, string> = {
   m0_cargo: 'Analista de Logística Pleno',
   m0_tempo: '2 anos e 4 meses',
   m0_empresa: 'Operador Logístico / Indústria',
@@ -121,7 +200,10 @@ export const initialFieldValues: Record<string, string> = {
   m5_plano90: '1. Consolidar o MCI com redução do tempo de doca\n2. Realizar os 3 contatos mensais com a diretoria\n3. Finalizar o treinamento de transbordo da equipe'
 };
 
-export const initialChecksValues: Record<string, Record<number, boolean>> = {
+// Retrocompatibility alias
+export const initialFieldValues = EMPTY_WORKBOOK_FIELDS;
+
+export const demoExampleChecks: Record<string, Record<number, boolean>> = {
   m1_check: {
     0: true,
     1: true,
@@ -135,6 +217,8 @@ export const initialChecksValues: Record<string, Record<number, boolean>> = {
     3: false
   }
 };
+
+export const initialChecksValues: Record<string, Record<number, boolean>> = EMPTY_WORKBOOK_CHECKS;
 
 export const initialRemindersList: ReminderItem[] = [
   {

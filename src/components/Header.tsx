@@ -50,11 +50,14 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Left: Mobile Toggle & Title */}
         <div className="flex items-center gap-3 min-w-0">
           <button
+            type="button"
+            id="btn-mobile-menu"
             onClick={onOpenMobileMenu}
-            className="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
-            aria-label="Abrir menu lateral"
+            className="lg:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 text-xs font-bold transition-all cursor-pointer shrink-0 shadow-2xs active:scale-95"
+            aria-label="Abrir menu lateral das etapas"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-4 h-4 text-sky-400" />
+            <span>Menu Etapas</span>
           </button>
 
           <div className="flex items-center gap-2.5 min-w-0">

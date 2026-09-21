@@ -177,10 +177,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           </div>
         </div>
 
-        {/* Security & Vercel hosting note */}
+        {/* Security note */}
         <div className="mt-5 text-center text-slate-400 text-xs flex items-center justify-center gap-2">
           <ShieldCheck className="w-4 h-4 text-emerald-400" />
-          <span>Hospedado com segurança · Isolamento por aluno · Pronto para Vercel</span>
+          <span>Ambiente Protegido</span>
         </div>
       </div>
     </div>

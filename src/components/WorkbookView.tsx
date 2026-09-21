@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Check, Sparkles, ArrowRight, Share2, CheckSquare, Square, Printer, Info, RotateCcw, Save, ShieldCheck, Download, Loader2 } from 'lucide-react';
+import { Copy, Check, Sparkles, ArrowRight, ArrowLeft, Share2, CheckSquare, Square, Printer, Info, RotateCcw, Save, ShieldCheck, Download, Loader2 } from 'lucide-react';
 import { PrintHeader } from './PrintHeader';
 import { PONTE_MODULES } from '../data/initialData';
 import { UserProfile } from '../types';
@@ -904,6 +904,55 @@ export const WorkbookView: React.FC<WorkbookViewProps> = ({
       </div>
 
       {renderContent()}
+
+      {/* Bottom Step Navigation Bar (No-Print) */}
+      <div className="no-print mt-10 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          {moduleId > 0 ? (
+            <button
+              type="button"
+              onClick={() => onSelectModule(moduleId - 1)}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs transition-all cursor-pointer shadow-2xs active:scale-98"
+            >
+              <ArrowLeft className="w-4 h-4 text-slate-500" />
+              <span>Etapa Anterior: {PONTE_MODULES[moduleId - 1]?.name}</span>
+            </button>
+          ) : (
+            <span className="text-xs text-slate-400 italic">Início da Travessia</span>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+          <button
+            type="button"
+            onClick={handleSaveClick}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs transition-colors cursor-pointer shadow-2xs"
+          >
+            {justSaved ? <Check className="w-4 h-4 text-emerald-600" /> : <Save className="w-4 h-4" />}
+            <span>{justSaved ? 'Salvo!' : 'Salvar Etapa'}</span>
+          </button>
+
+          {moduleId < 6 ? (
+            <button
+              type="button"
+              onClick={() => onSelectModule(moduleId + 1)}
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0B2046] hover:bg-[#123068] text-white font-bold text-xs transition-all cursor-pointer shadow-xs active:scale-98"
+            >
+              <span>Avançar: {PONTE_MODULES[moduleId + 1]?.name}</span>
+              <ArrowRight className="w-4 h-4 text-sky-400" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={handleDownloadPdf}
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs transition-all cursor-pointer shadow-xs"
+            >
+              <Download className="w-4 h-4 text-white" />
+              <span>Baixar Portfólio Final em PDF</span>
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
