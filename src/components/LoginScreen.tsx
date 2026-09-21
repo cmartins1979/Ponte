@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { LogoMentorLogistica } from './LogoMentorLogistica';
-import { ShieldCheck, KeyRound, User, Mail, ArrowRight, Lock, CheckCircle2, BookOpen } from 'lucide-react';
+import { ShieldCheck, KeyRound, User, Mail, ArrowRight, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { UserProfile } from '../types';
 
 interface LoginScreenProps {
   onLogin: (profile: UserProfile, accessKey: string) => void;
 }
 
+const REQUIRED_ACCESS_KEY = 'PONTE2026';
+
 export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [accessKey, setAccessKey] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,8 +27,15 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
       setError('Por favor, informe um e-mail válido para vincular seu diário.');
       return;
     }
-    if (!accessKey.trim()) {
+
+    const cleanKey = accessKey.trim().toUpperCase();
+    if (!cleanKey) {
       setError('Por favor, informe a Chave de Acesso da sua turma da mentoria.');
+      return;
+    }
+
+    if (cleanKey !== REQUIRED_ACCESS_KEY) {
+      setError('Chave de acesso incorreta. O acesso é exclusivo com a chave oficial PONTE2026.');
       return;
     }
 
@@ -44,17 +54,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
     };
 
     setError(null);
-    onLogin(profile, accessKey.trim());
-  };
-
-  const handleQuickDemo = () => {
-    const profile: UserProfile = {
-      name: 'Carlos Eduardo',
-      email: 'carlos.aluno@metodoponte.com',
-      initials: 'CE',
-      role: 'Aluno Método PONTE',
-    };
-    onLogin(profile, 'PONTE2026');
+    onLogin(profile, cleanKey);
   };
 
   return (
@@ -84,8 +84,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs font-semibold text-rose-700 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0"></span>
+            <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs font-semibold text-rose-700 flex items-center gap-2.5">
+              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
               <span>{error}</span>
             </div>
           )}
@@ -119,26 +119,43 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                 className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-sky-500/30 focus:border-sky-600 transition-all"
                 required
               />
-              <p className="text-[10px] text-slate-600 mt-1">
-                Usado como chave para isolar suas anotações com segurança.
+              <p className="text-[10px] text-slate-500 mt-1">
+                Usado para isolar e salvar seu diário individual com segurança neste navegador.
               </p>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                <KeyRound className="w-3.5 h-3.5 text-sky-700" />
-                <span>Chave de Acesso da Turma</span>
-              </label>
-              <input
-                type="password"
-                value={accessKey}
-                onChange={(e) => setAccessKey(e.target.value)}
-                placeholder="Ex: PONTE2026"
-                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-sky-500/30 focus:border-sky-600 transition-all"
-                required
-              />
-              <p className="text-[10px] text-slate-600 mt-1">
-                Fornecida nas aulas e no grupo oficial da mentoria.
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                  <KeyRound className="w-3.5 h-3.5 text-sky-700" />
+                  <span>Chave de Acesso da Turma</span>
+                </label>
+                <span className="text-[10px] font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-md border border-sky-200/60">
+                  Obrigatório
+                </span>
+              </div>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={accessKey}
+                  onChange={(e) => setAccessKey(e.target.value)}
+                  placeholder="Digite: PONTE2026"
+                  autoCapitalize="characters"
+                  autoComplete="off"
+                  className="w-full pl-3.5 pr-10 py-2.5 text-sm font-mono tracking-wider bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 placeholder:font-sans placeholder:tracking-normal focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-sky-500/30 focus:border-sky-600 transition-all"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 rounded-md transition-colors cursor-pointer"
+                  title={showPassword ? 'Ocultar chave' : 'Mostrar chave'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              <p className="text-[10px] text-slate-500 mt-1">
+                Chave oficial exclusiva da mentoria: <strong className="text-slate-700">PONTE2026</strong>
               </p>
             </div>
 
@@ -151,7 +168,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                   className="w-4 h-4 rounded text-sky-600 focus:ring-sky-500 accent-sky-600"
                 />
                 <span className="text-xs text-slate-600 font-medium">
-                  Manter conectado neste navegador
+                  Lembrar meu acesso neste dispositivo
                 </span>
               </label>
             </div>
@@ -164,17 +181,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
           </form>
-
-          {/* Quick Demo button for testing */}
-          <div className="mt-5 pt-4 border-t border-slate-200/80 text-center">
-            <button
-              type="button"
-              onClick={handleQuickDemo}
-              className="text-xs text-slate-600 hover:text-sky-700 font-semibold underline underline-offset-2 transition-colors cursor-pointer"
-            >
-              Entrar como aluno de demonstração (preenchimento guiado)
-            </button>
-          </div>
         </div>
 
         {/* Security note */}

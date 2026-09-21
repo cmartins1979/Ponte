@@ -142,7 +142,11 @@ export default function App() {
   }, [reminders, currentUser]);
 
   // Login handler
-  const handleLogin = (profile: UserProfile, _accessKey: string) => {
+  const handleLogin = (profile: UserProfile, accessKey: string) => {
+    if (accessKey.trim().toUpperCase() !== 'PONTE2026') {
+      alert('Chave de acesso incorreta. Apenas a chave oficial PONTE2026 é autorizada.');
+      return;
+    }
     setCurrentUser(profile);
     localStorage.setItem('ponte_current_student', JSON.stringify(profile));
   };
