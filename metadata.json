@@ -1,0 +1,6 @@
+{
+  "name": "P.O.N.T.E - Diário de Travessia",
+  "description": "Diário e workbook de travessia estruturado nos pilares Postura, Operação, Números, Transferir e Estar Visível do Método PONTE.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
