@@ -73,7 +73,12 @@ export const EvolutionCard: React.FC<EvolutionCardProps> = ({
             {completedSections} de {totalSections} seções com diagnósticos ou tarefas iniciadas.
           </p>
           <p className="text-[11px] text-slate-400 mt-1.5 leading-snug">
-            Alvo: <strong className="text-amber-400">{targetRole || 'Cargo de Liderança'}</strong>
+            Alvo:{' '}
+            {targetRole?.trim() ? (
+              <strong className="text-amber-400">{targetRole}</strong>
+            ) : (
+              <span className="text-slate-400 italic">Defina no Ponto de Partida</span>
+            )}
           </p>
         </div>
       </div>

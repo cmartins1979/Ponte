@@ -15,10 +15,46 @@ import {
   demoExampleFields,
   demoExampleChecks,
   initialRemindersList,
+  isContaminatedDemoFields,
+  isContaminatedDemoChecks,
 } from './data/initialData';
 import { ReminderItem, UserProfile } from './types';
 import { Sparkles, Award, RotateCcw, Download, Save, ShieldCheck, Printer, FileText, Check, Loader2 } from 'lucide-react';
 import { exportModuleToPdf, exportFullWorkbookToPdf } from './utils/pdfExport';
+
+// Global sanitize check on boot to purge contaminated legacy keys from previous test sessions
+try {
+  localStorage.removeItem('ponte_fields_v2');
+  localStorage.removeItem('ponte_checks_v2');
+  localStorage.removeItem('ponte_reminders_v2');
+  localStorage.removeItem('ponte_fields_guest');
+  localStorage.removeItem('ponte_checks_guest');
+
+  // Purge any stored student key that has demo template signatures
+  const keysToClean: string[] = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && (k.startsWith('ponte_fields_') || k.startsWith('ponte_checks_'))) {
+      keysToClean.push(k);
+    }
+  }
+
+  keysToClean.forEach((k) => {
+    try {
+      const raw = localStorage.getItem(k);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (k.startsWith('ponte_fields_') && isContaminatedDemoFields(parsed)) {
+          localStorage.removeItem(k);
+        } else if (k.startsWith('ponte_checks_') && isContaminatedDemoChecks(parsed)) {
+          localStorage.removeItem(k);
+        }
+      }
+    } catch {}
+  });
+} catch (err) {
+  console.warn('Initial storage purge warning:', err);
+}
 
 export default function App() {
   // Authentication & Active Student Profile
@@ -48,7 +84,14 @@ export default function App() {
     try {
       if (currentUser) {
         const saved = localStorage.getItem(`ponte_fields_${userKey}`);
-        if (saved) return JSON.parse(saved);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (isContaminatedDemoFields(parsed)) {
+            localStorage.removeItem(`ponte_fields_${userKey}`);
+            return EMPTY_WORKBOOK_FIELDS;
+          }
+          return parsed;
+        }
       }
       return EMPTY_WORKBOOK_FIELDS;
     } catch {
@@ -60,7 +103,14 @@ export default function App() {
     try {
       if (currentUser) {
         const saved = localStorage.getItem(`ponte_checks_${userKey}`);
-        if (saved) return JSON.parse(saved);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (isContaminatedDemoChecks(parsed)) {
+            localStorage.removeItem(`ponte_checks_${userKey}`);
+            return EMPTY_WORKBOOK_CHECKS;
+          }
+          return parsed;
+        }
       }
       return EMPTY_WORKBOOK_CHECKS;
     } catch {
@@ -96,7 +146,13 @@ export default function App() {
     try {
       const savedFields = localStorage.getItem(`ponte_fields_${currentKey}`);
       if (savedFields) {
-        setFields(JSON.parse(savedFields));
+        const parsed = JSON.parse(savedFields);
+        if (isContaminatedDemoFields(parsed)) {
+          localStorage.removeItem(`ponte_fields_${currentKey}`);
+          setFields(EMPTY_WORKBOOK_FIELDS);
+        } else {
+          setFields(parsed);
+        }
       } else {
         // Novo aluno: sempre começa com diário limpo e vazio para preencher!
         setFields(EMPTY_WORKBOOK_FIELDS);
@@ -104,7 +160,13 @@ export default function App() {
 
       const savedChecks = localStorage.getItem(`ponte_checks_${currentKey}`);
       if (savedChecks) {
-        setChecks(JSON.parse(savedChecks));
+        const parsedChecks = JSON.parse(savedChecks);
+        if (isContaminatedDemoChecks(parsedChecks)) {
+          localStorage.removeItem(`ponte_checks_${currentKey}`);
+          setChecks(EMPTY_WORKBOOK_CHECKS);
+        } else {
+          setChecks(parsedChecks);
+        }
       } else {
         setChecks(EMPTY_WORKBOOK_CHECKS);
       }
@@ -234,6 +296,11 @@ export default function App() {
   };
 
   const handleResetAllData = () => {
+    if (currentUser) {
+      const currentKey = currentUser.email.replace(/[^a-zA-Z0-9]/g, '_');
+      localStorage.setItem(`ponte_fields_${currentKey}`, JSON.stringify(EMPTY_WORKBOOK_FIELDS));
+      localStorage.setItem(`ponte_checks_${currentKey}`, JSON.stringify(EMPTY_WORKBOOK_CHECKS));
+    }
     setFields(EMPTY_WORKBOOK_FIELDS);
     setChecks(EMPTY_WORKBOOK_CHECKS);
   };

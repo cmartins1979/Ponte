@@ -220,6 +220,32 @@ export const demoExampleChecks: Record<string, Record<number, boolean>> = {
 
 export const initialChecksValues: Record<string, Record<number, boolean>> = EMPTY_WORKBOOK_CHECKS;
 
+/**
+ * Detects if a stored dataset is the contaminated demo example that was mistakenly
+ * initialized by older versions of the app, so it can be purged automatically.
+ */
+export const isContaminatedDemoFields = (data: any): boolean => {
+  if (!data || typeof data !== 'object') return false;
+  return (
+    data.m0_cargo === 'Analista de Logística Pleno' ||
+    data.m0_tempo === '2 anos e 4 meses' ||
+    data.m0_empresa === 'Operador Logístico / Indústria' ||
+    data.m0_alvo === 'Supervisor de Operações' ||
+    data.m0_alvo === 'Supervisor de Operações Logísticas' ||
+    (typeof data.m1_auto1 === 'string' && data.m1_auto1.includes('Analista que cuida de armazém')) ||
+    (typeof data.m2_mci === 'string' && data.m2_mci.includes('tempo de permanência de carretas'))
+  );
+};
+
+export const isContaminatedDemoChecks = (data: any): boolean => {
+  if (!data || typeof data !== 'object') return false;
+  const m1 = data.m1_check;
+  if (m1 && m1[0] === true && m1[1] === true && m1[2] === false && m1[3] === true) {
+    return true;
+  }
+  return false;
+};
+
 export const initialRemindersList: ReminderItem[] = [
   {
     id: 'rem-1',
