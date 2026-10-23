@@ -7,7 +7,7 @@ import { UserProfile } from '../types';
 interface HeaderProps {
   activeModuleId: number;
   onOpenMobileMenu: () => void;
-  onOpenAiAssistant: () => void;
+  onOpenAiAssistant?: () => void;
   onOpenPortfolio: () => void;
   onDownloadPdf: () => void;
   onDownloadFullPdf: () => void;
@@ -118,16 +118,6 @@ export const Header: React.FC<HeaderProps> = ({
               {downloading ? 'Gerando...' : downloaded ? 'PDF Baixado!' : 'Baixar em PDF'}
             </span>
             <span className="sm:hidden">PDF</span>
-          </button>
-
-          {/* AI Mentor Trigger */}
-          <button
-            onClick={onOpenAiAssistant}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200/80 rounded-lg transition-colors shadow-2xs cursor-pointer"
-            title="Conselho do Mentor IA PONTE"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-            <span className="hidden md:inline">Mentor IA</span>
           </button>
 
           {/* User Profile Badge with Quick Logout */}

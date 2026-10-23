@@ -122,7 +122,13 @@ export default function App() {
     try {
       if (currentUser) {
         const saved = localStorage.getItem(`ponte_reminders_${userKey}`);
-        if (saved) return JSON.parse(saved);
+        if (saved) {
+          const parsed: ReminderItem[] = JSON.parse(saved);
+          return parsed.map((item) => ({
+            ...item,
+            title: item.title.replace(/áudio de 90s/gi, 'áudio de 60S')
+          }));
+        }
       }
       return initialRemindersList;
     } catch {
@@ -173,7 +179,11 @@ export default function App() {
 
       const savedReminders = localStorage.getItem(`ponte_reminders_${currentKey}`);
       if (savedReminders) {
-        setReminders(JSON.parse(savedReminders));
+        const parsed: ReminderItem[] = JSON.parse(savedReminders);
+        setReminders(parsed.map((item) => ({
+          ...item,
+          title: item.title.replace(/áudio de 90s/gi, 'áudio de 60S')
+        })));
       } else {
         setReminders(initialRemindersList);
       }
@@ -292,6 +302,8 @@ export default function App() {
       setChecks((prev) => ({ ...prev, m1_check: {} }));
     } else if (activeModuleId === 4) {
       setChecks((prev) => ({ ...prev, m4_check: {} }));
+    } else if (activeModuleId === 5) {
+      setChecks((prev) => ({ ...prev, m5_check: {} }));
     }
   };
 
@@ -314,7 +326,7 @@ export default function App() {
   const handleExportBackup = () => {
     if (!currentUser) return;
     const backupData = {
-      app: 'Diario PONTE - Mentor de Logística Carlos Martins',
+      app: 'Diário PONTE - Caderno de Acompanhamento do curso Como ser promovido na Logística',
       version: '2.0',
       exportedAt: new Date().toISOString(),
       student: currentUser,
@@ -495,7 +507,7 @@ export default function App() {
                   onDeleteReminder={handleDeleteReminder}
                 />
 
-                {/* Quick Mentor Tip Card */}
+                {/* Inspiring Principle Card */}
                 <div className="bg-gradient-to-br from-indigo-50/80 to-sky-50/80 rounded-2xl border border-indigo-200/70 p-5 shadow-2xs">
                   <div className="flex items-center gap-2 text-indigo-900 font-bold text-xs uppercase tracking-wider mb-2">
                     <Sparkles className="w-4 h-4 text-indigo-600" />
@@ -504,13 +516,6 @@ export default function App() {
                   <p className="text-xs sm:text-sm text-slate-800 leading-relaxed italic">
                     "{currentModule.quote}"
                   </p>
-                  <button
-                    onClick={() => setIsAiModalOpen(true)}
-                    className="mt-3.5 w-full py-2 px-3 text-xs font-bold text-indigo-900 bg-white hover:bg-indigo-100/60 border border-indigo-200 rounded-xl transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
-                  >
-                    <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-                    <span>Pedir conselho do Mentor IA</span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -518,13 +523,15 @@ export default function App() {
         </main>
       </div>
 
-      {/* AI Mentor Assistant Modal */}
+      {/* AI Mentor Assistant Modal (código salvo para integração futura quando solicitado) */}
+      {/* 
       <AiAssistantModal
         isOpen={isAiModalOpen}
         onClose={() => setIsAiModalOpen(false)}
         moduleId={activeModuleId}
         fields={fields}
-      />
+      /> 
+      */}
 
       {/* Clear / Reset Modal */}
       <ClearDataModal

@@ -73,7 +73,7 @@ Responda exclusivamente o JSON em Português do Brasil.`;
     return {
       quote: 'Se você não achar que está pronto, ninguém mais vai achar.',
       feedback: 'Continue preenchendo os campos deste módulo com franqueza e foco em resultados.',
-      improvementTip: 'Sempre responda às perguntas pensando em como um supervisor descreveria a situação.',
+      improvementTip: 'Sempre responda às perguntas pensando em como um gestor descreveria a situação.',
       suggestedAction: 'Aplique o método das 2 perguntas na próxima interação com a equipe.'
     };
   }

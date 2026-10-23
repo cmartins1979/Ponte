@@ -37,8 +37,11 @@ export const PrintHeader: React.FC<PrintHeaderProps> = ({
           <div className="text-xs font-black text-[#0B2046] tracking-wider uppercase">
             MÉTODO P.O.N.T.E
           </div>
-          <div className="text-[10px] text-slate-500 font-semibold tracking-wide">
-            Workbook Oficial de Travessia
+          <div className="text-[10px] text-slate-700 font-bold tracking-wide">
+            Diário PONTE — Caderno de Acompanhamento
+          </div>
+          <div className="text-[9px] text-sky-800 font-semibold">
+            Como ser promovido na Logística
           </div>
           <div className="text-[10px] text-slate-400 mt-0.5">
             Emissão: {currentDateFormatted}

@@ -46,10 +46,10 @@ export function exportModuleToPdf({ moduleId, fields, checks, user }: ExportPdfO
     doc.setFontSize(13);
     doc.text('MENTOR DE LOGÍSTICA · CARLOS MARTINS', margin + 6, y + 8);
 
-    doc.setFontSize(9);
+    doc.setFontSize(8.5);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(186, 230, 253); // Sky-200
-    doc.text('MÉTODO P.O.N.T.E — DIÁRIO OFICIAL DE TRAVESSIA', margin + 6, y + 14);
+    doc.text('DIÁRIO PONTE · Caderno de Acompanhamento — Como ser promovido na Logística', margin + 6, y + 14);
 
     doc.setFontSize(8);
     doc.setTextColor(203, 213, 225); // Slate-300
@@ -258,20 +258,58 @@ export function exportModuleToPdf({ moduleId, fields, checks, user }: ExportPdfO
     addFieldBox('Aula 4.2 — Sessão de Transbordo (Pessoa Treinada e Data)', `${f('m4_sessao_pessoa')} — Data: ${f('m4_sessao_data')}`.trim());
     addFieldBox('Aula 4.3 — Treinamento Proposto para a Operação', f('m4_treino_tema'));
   } else if (moduleId === 5) {
-    addSectionTitle('Pilar E — Estar Visível: A Conversa de Carreira');
-    addFieldBox('Data da Conversa de Carreira', f('m5_conv_data'));
-    addFieldBox('Metas e Alinhamentos Acordados', f('m5_conv_metas'));
-    addFieldBox('Prazo Estipulado para Revisita', f('m5_conv_prazo'));
-    addFieldBox('Cenário Identificado', f('m5_cenario'), 'Promissor, Em avaliação ou Desafiador');
-    addFieldBox('Meu Plano de Ação de 90 Dias', f('m5_plano90'), 'Ações planejadas para Mês 1, Mês 2 e Mês 3');
+    addSectionTitle('Pilar E — A Porta: Visibilidade para quem decide');
+    const termometroText = [
+      `• Gestor Direto (Decisor 1): ${f('m5_dec1_nome') || '—'} — Nota: ${f('m5_dec1_nota') || '—'}/10`,
+      `• Gestor do teu Gestor (Decisor 2): ${f('m5_dec2_nome') || '—'} — Nota: ${f('m5_dec2_nota') || '—'}/10`,
+      `• RH / BP de Gente (Decisor 3): ${f('m5_dec3_nome') || '—'} — Nota: ${f('m5_dec3_nota') || '—'}/10`,
+    ].join('\n');
+    addFieldBox('Aula 5.1 — Termômetro de Relação dos 3 Decisores (0 a 10)', termometroText);
+    addFieldBox('Gap Mais Urgente Identificado', f('m5_gap_urgente'), 'A nota mais baixa é o gap mais urgente a ser fechado');
+    addFieldBox(
+      'Exercício 5.1 — Ponto de Contato Planejado (Próximas 2 Semanas)',
+      `Decisor: ${f('m5_contato_decisor') || '—'}\nFormato: ${f('m5_contato_tipo') || '—'}\nQuando: ${f('m5_contato_quando') || '—'}\nRoteiro: ${f('m5_contato_script') || '—'}`.trim()
+    );
+
+    addSectionTitle('Aula 5.2 — A Conversa de Carreira com o Gestor');
+    addFieldBox('Data Marcada no Calendário', f('m5_conv_data'), 'Agendada no calendário para as próximas 2 semanas');
+    addFieldBox('Feedback Honesto Recebido (Perguntas 1 e 2)', f('m5_conv_feedback') || f('m5_conv_resposta'));
+    addFieldBox('Lacuna ou Competência Apontada para o Próximo Nível (Pergunta 3)', f('m5_conv_lacuna') || f('m5_conv_metas'));
+    if (f('m5_conv_objecao')) {
+      addFieldBox('Objeção Enfrentada e Resposta Utilizada', f('m5_conv_objecao'));
+    }
+
+    addSectionTitle('Aula 5.3 — Depois da Conversa: Plano de 90 Dias');
+    addFieldBox('Semanas 1 a 4 (Atacar a 1ª Lacuna)', f('m5_p90_sem1_4') || '—');
+    addFieldBox('Semanas 5 a 8 (Resultados Mensuráveis nas 4 Moedas)', f('m5_p90_sem5_8') || '—');
+    addFieldBox('Semanas 9 a 12 (Retomar a Conversa com Evidências)', f('m5_p90_sem9_12') || '—');
+    addFieldBox('A Régua: 1 Atualização Mensal Sem Cobrança', f('m5_atualizacao_mensal'));
   } else if (moduleId === 6) {
     addSectionTitle('Portfólio Consolidado da Travessia PONTE');
     addFieldBox('Ponto de Partida e Trajetória', `Sou ${f('m0_cargo') || '...'} na ${f('m0_empresa') || '...'}. Meta: ${f('m0_alvo') || '...'} até ${f('m0_data') || '...'}`);
-    addFieldBox('P — Postura', `Como me descrevo hoje:\n${f('m1_auto1') || '—'}\n\nComo um supervisor descreve:\n${f('m1_auto2') || '—'}`);
+    addFieldBox('P — Postura', `Como me descrevo hoje:\n${f('m1_auto1') || '—'}\n\nComo um gestor descreve:\n${f('m1_auto2') || '—'}`);
     addFieldBox('O — Operação (MCI & Entregas)', `MCI: ${f('m2_mci') || '—'}\n\nEntregas: ${f('m2_ent1b') || '—'}`);
     addFieldBox('N — Números (Relatório de Impacto)', `Resultados:\n1. ${f('m3_r1') || '—'}\n2. ${f('m3_r2') || '—'}\n3. ${f('m3_r3') || '—'}\nProblema resolvido: ${f('m3_prob') || '—'}`);
     addFieldBox('T — Transferir (Delegação)', `Rotina documentada: ${f('m4_doc_rotina') || '—'}\nPessoa treinada: ${f('m4_sessao_pessoa') || '—'}`);
-    addFieldBox('E — Estar Visível (Conversa & Plano de 90 Dias)', `Data: ${f('m5_conv_data') || '—'}\nMetas: ${f('m5_conv_metas') || '—'}\nCenário: ${f('m5_cenario') || '—'}\n\nPlano de 90 Dias:\n${f('m5_plano90') || '—'}`);
+
+    const m5PortfolioSummary = [
+      `Termômetro dos 3 Decisores:`,
+      `• Gestor Direto: ${f('m5_dec1_nome') || '—'} (Nota: ${f('m5_dec1_nota') || '—'}/10)`,
+      `• Gestor do teu Gestor: ${f('m5_dec2_nome') || '—'} (Nota: ${f('m5_dec2_nota') || '—'}/10)`,
+      `• RH / BP: ${f('m5_dec3_nome') || '—'} (Nota: ${f('m5_dec3_nota') || '—'}/10)`,
+      f('m5_gap_urgente') ? `Gap Urgente: ${f('m5_gap_urgente')}` : '',
+      `\nConversa de Carreira:`,
+      `Data: ${f('m5_conv_data') || '—'}`,
+      `Feedback: ${f('m5_conv_feedback') || f('m5_conv_metas') || '—'}`,
+      `Lacuna apontada: ${f('m5_conv_lacuna') || '—'}`,
+      `\nPlano de 90 Dias:`,
+      `• Semanas 1-4: ${f('m5_p90_sem1_4') || '—'}`,
+      `• Semanas 5-8: ${f('m5_p90_sem5_8') || '—'}`,
+      `• Semanas 9-12: ${f('m5_p90_sem9_12') || '—'}`,
+      f('m5_atualizacao_mensal') ? `Atualização mensal planejada: "${f('m5_atualizacao_mensal')}"` : '',
+    ].filter(Boolean).join('\n');
+
+    addFieldBox('E — A Porta (Sistema de Visibilidade & Conversa de Carreira)', m5PortfolioSummary);
   }
 
   // Draw footer on last page
@@ -399,9 +437,9 @@ export function exportFullWorkbookToPdf({ fields, checks, user }: Omit<ExportPdf
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(14);
   doc.text('MENTOR DE LOGÍSTICA · CARLOS MARTINS', margin + 6, y + 9);
-  doc.setFontSize(9.5);
+  doc.setFontSize(8.5);
   doc.setTextColor(186, 230, 253);
-  doc.text('MÉTODO P.O.N.T.E — WORKBOOK COMPLETO DE TRAVESSIA', margin + 6, y + 16);
+  doc.text('DIÁRIO PONTE · Caderno de Acompanhamento do curso Como ser promovido na Logística', margin + 6, y + 16);
   doc.setFontSize(8);
   doc.setTextColor(203, 213, 225);
   doc.text(
@@ -445,7 +483,7 @@ export function exportFullWorkbookToPdf({ fields, checks, user }: Omit<ExportPdf
   addFieldBox('Aula 1.1 — Como sou visto pelo gestor', f('m1_descricao'));
   addFieldBox('Aula 1.2 — Pesquisa de 3 Perguntas', f('m1_pesquisa'));
   addFieldBox('Aula 1.3 — Gestão de Percepção (3 Sinais)', f('m1_percepcao'));
-  addFieldBox('Aula 1.4 — Autoimagem Operacional vs Tática', `Hoje: ${f('m1_auto1')}\n\nComo Supervisor: ${f('m1_auto2')}`);
+  addFieldBox('Aula 1.4 — Autoimagem Operacional vs Tática', `Hoje: ${f('m1_auto1')}\n\nComo Gestor: ${f('m1_auto2')}`);
 
   addSectionTitle('3. Pilar O — Operação');
   addFieldBox('Meta Crucialmente Importante (MCI)', f('m2_mci'));
@@ -465,9 +503,35 @@ export function exportFullWorkbookToPdf({ fields, checks, user }: Omit<ExportPdf
   addFieldBox('Pessoa Treinada & Data', `${f('m4_sessao_pessoa')} (Data: ${f('m4_sessao_data')})`);
   addFieldBox('Treinamento Proposto', f('m4_treino_tema'));
 
-  addSectionTitle('6. Pilar E — Estar Visível');
-  addFieldBox('Conversa de Carreira', `Data: ${f('m5_conv_data')}\nMetas: ${f('m5_conv_metas')}\nPrazo: ${f('m5_conv_prazo')}\nCenário: ${f('m5_cenario')}`);
-  addFieldBox('Plano de Ação de 90 Dias', f('m5_plano90'));
+  addSectionTitle('6. Pilar E — A Porta: Visibilidade para quem decide');
+  const termometroFull = [
+    `Termômetro dos 3 Decisores:`,
+    `• Gestor Direto (Decisor 1): ${f('m5_dec1_nome') || '—'} — Nota: ${f('m5_dec1_nota') || '—'}/10`,
+    `• Gestor do teu Gestor (Decisor 2): ${f('m5_dec2_nome') || '—'} — Nota: ${f('m5_dec2_nota') || '—'}/10`,
+    `• RH / BP de Gente (Decisor 3): ${f('m5_dec3_nome') || '—'} — Nota: ${f('m5_dec3_nota') || '—'}/10`,
+    f('m5_gap_urgente') ? `Gap Urgente: ${f('m5_gap_urgente')}` : '',
+  ].filter(Boolean).join('\n');
+  addFieldBox('Termômetro de Relação & Gap Mais Urgente', termometroFull);
+
+  if (f('m5_contato_decisor')) {
+    addFieldBox(
+      'Ponto de Contato Planejado (Próximas 2 Semanas)',
+      `Decisor: ${f('m5_contato_decisor')} (${f('m5_contato_tipo')}) | Quando: ${f('m5_contato_quando')}\nRoteiro: ${f('m5_contato_script')}`
+    );
+  }
+
+  addFieldBox(
+    'Conversa de Carreira com o Gestor',
+    `Data: ${f('m5_conv_data') || '—'}\nFeedback: ${f('m5_conv_feedback') || f('m5_conv_metas') || '—'}\nLacuna a desenvolver: ${f('m5_conv_lacuna') || '—'}${f('m5_conv_objecao') ? `\nObjeção tratada: ${f('m5_conv_objecao')}` : ''}`
+  );
+
+  const plano90Full = [
+    `• Semanas 1 a 4 (Atacar 1ª lacuna): ${f('m5_p90_sem1_4') || '—'}`,
+    `• Semanas 5 a 8 (Resultados mensuráveis): ${f('m5_p90_sem5_8') || '—'}`,
+    `• Semanas 9 a 12 (Retomar com evidências): ${f('m5_p90_sem9_12') || '—'}`,
+    f('m5_atualizacao_mensal') ? `Atualização mensal sem cobrança: "${f('m5_atualizacao_mensal')}"` : '',
+  ].filter(Boolean).join('\n');
+  addFieldBox('Plano de 90 Dias & Acompanhamento', plano90Full);
 
   drawFooter();
 

@@ -87,8 +87,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <span className="text-[10px] text-sky-400 font-bold tracking-widest uppercase block">
                 CARLOS MARTINS
               </span>
-              <span className="text-[9px] text-slate-400 block tracking-tight">
-                Método P.O.N.T.E
+              <span className="text-[9px] text-slate-300 block tracking-tight line-clamp-1" title="Caderno de Acompanhamento do curso Como ser promovido na Logística">
+                Diário PONTE · Como ser promovido na Logística
               </span>
             </div>
           </div>

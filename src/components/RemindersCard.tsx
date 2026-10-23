@@ -48,7 +48,7 @@ export const RemindersCard: React.FC<RemindersCardProps> = ({
         <form onSubmit={handleAdd} className="mb-4 p-3 bg-slate-50 rounded-xl border border-slate-200">
           <input
             type="text"
-            placeholder="Ex: Gravar áudio de 90s no grupo"
+            placeholder="Ex: Gravar áudio de 60S no grupo"
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
             className="w-full text-xs px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 mb-2 focus:ring-1 focus:ring-sky-500"

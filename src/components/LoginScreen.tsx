@@ -76,10 +76,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
               Acesso Exclusivo para Alunos
             </span>
             <h2 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
-              Diário de Travessia PONTE
+              Diário PONTE
             </h2>
-            <p className="text-xs text-slate-600 mt-1">
-              Preencha seus dados para acessar e salvar seu workbook individual com segurança.
+            <p className="text-xs font-semibold text-sky-800 mt-1">
+              Caderno de Acompanhamento do curso Como ser promovido na Logística
             </p>
           </div>
 
@@ -177,7 +177,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
               type="submit"
               className="w-full py-3 px-4 bg-[#0B2046] hover:bg-[#123068] text-white font-bold text-sm rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer mt-2 group"
             >
-              <span>Entrar no Diário de Travessia</span>
+              <span>Acessar Diário PONTE</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
           </form>

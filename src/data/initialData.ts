@@ -50,10 +50,10 @@ export const PONTE_MODULES: PonteModuleMeta[] = [
     id: 5,
     key: 'E',
     letter: 'E',
-    name: 'Estar Visível',
-    subtitle: 'Relação com Decisores & Conversa de Carreira',
+    name: 'A Porta',
+    subtitle: 'Visibilidade para quem decide & Conversa de Carreira',
     color: '#0F2847',
-    quote: 'Ser bom não basta. Ser visto sendo bom é o que promove.'
+    quote: 'Se você não achar que está pronto, ninguém mais vai achar — Carlos Martins'
   },
   {
     id: 6,
@@ -126,13 +126,35 @@ export const EMPTY_WORKBOOK_FIELDS: Record<string, string> = {
   m4_sessao_reacao: '',
   m4_treino_tema: '',
 
+  // Módulo 5 (v2) — A Porta: Visibilidade para quem decide
   m5_dec1_nome: '',
-  m5_dec1_avalia: '',
+  m5_dec1_nota: '',
   m5_dec2_nome: '',
-  m5_dec2_avalia: '',
+  m5_dec2_nota: '',
   m5_dec3_nome: '',
-  m5_dec3_avalia: '',
+  m5_dec3_nota: '',
+  m5_gap_urgente: '',
+
+  m5_contato_decisor: '',
+  m5_contato_tipo: '',
+  m5_contato_quando: '',
+  m5_contato_script: '',
+
   m5_conv_data: '',
+  m5_conv_feedback: '',
+  m5_conv_lacuna: '',
+  m5_conv_objecao: '',
+
+  m5_p90_sem1_4: '',
+  m5_p90_sem5_8: '',
+  m5_p90_sem9_12: '',
+  m5_atualizacao_mensal: '',
+  m5_decisao_sinal: '',
+
+  // Retrocompatibility aliases
+  m5_dec1_avalia: '',
+  m5_dec2_avalia: '',
+  m5_dec3_avalia: '',
   m5_conv_metas: '',
   m5_conv_prazo: '',
   m5_cenario: '',
@@ -143,6 +165,7 @@ export const EMPTY_WORKBOOK_FIELDS: Record<string, string> = {
 export const EMPTY_WORKBOOK_CHECKS: Record<string, Record<number, boolean>> = {
   m1_check: {},
   m4_check: {},
+  m5_check: {},
 };
 
 export const demoExampleFields: Record<string, string> = {
@@ -189,15 +212,40 @@ export const demoExampleFields: Record<string, string> = {
   m4_sessao_reacao: 'Sentiu-se mais seguro para operar a rotina sozinho durante minhas férias ou reuniões.',
   m4_treino_tema: 'Boas Práticas de Gestão de Doca e Redução de Diárias',
 
-  m5_dec1_nome: 'Carlos Eduardo (Gerente de Operações)',
-  m5_dec1_avalia: 'Reconhece o trabalho diário e já percebeu a mudança de postura com o relatório de impacto.',
+  // Módulo 5 (v2) Demo
+  m5_dec1_nome: 'Carlos Eduardo (Gerente de Operações — Gestor Direto)',
+  m5_dec1_nota: '8',
   m5_dec2_nome: 'Roberto Antunes (Diretor de Supply Chain)',
-  m5_dec2_avalia: 'Precisa conhecer mais os projetos de redução de custos que implementei.',
+  m5_dec2_nota: '4',
   m5_dec3_nome: 'Camila Rocha (Business Partner de RH)',
-  m5_dec3_avalia: 'Tem mapeado o plano de sucessão para supervisão no próximo ciclo de avaliação.',
-  m5_conv_data: '15 de Outubro',
-  m5_conv_material: 'Mapa de Área em 1 Página, Relatório de Impacto Mensal e Diário de Bordo',
-  m5_plano90: '1. Consolidar o MCI com redução do tempo de doca\n2. Realizar os 3 contatos mensais com a diretoria\n3. Finalizar o treinamento de transbordo da equipe'
+  m5_dec3_nota: '5',
+  m5_gap_urgente: 'Roberto Antunes (Diretor de Supply Chain) — Nota 4: Sabe meu nome por alto, mas não tem clareza dos meus resultados na doca e economia de frete.',
+
+  m5_contato_decisor: 'Roberto Antunes (Diretor de Supply Chain)',
+  m5_contato_tipo: 'E-mail curto pedindo opinião sobre dados de permanência de doca',
+  m5_contato_quando: 'Próxima terça-feira após fechamento dos KPIs operacionais',
+  m5_contato_script: '"Roberto, bom dia. Fechamos a redução de 28% no tempo de doca da filial. Como você tem conduzido a padronização das outras unidades, gostaria de saber se esse modelo cabe na pauta do próximo comitê mensal."',
+
+  m5_conv_data: '15 de Outubro às 14h (marcada no calendário)',
+  m5_conv_feedback: 'O gestor elogiou o domínio técnico e os relatórios de impacto mensais, reforçando que sou a referência do turno. Disse que o trabalho em si está impecável.',
+  m5_conv_lacuna: 'Gestão de pessoas e mediação de conflitos no pátio: preciso mostrar capacidade de liderar o time e formar sucessores.',
+  m5_conv_objecao: 'Objeção: "Não depende só de mim" → Respondi: "Quem mais precisa me conhecer? Como posso facilitar isso?" O gestor sugeriu alinhar com o Diretor Roberto e a BP Camila.',
+
+  m5_p90_sem1_4: 'Semanas 1 a 4: Assumir os DDS diários matutinos de 10 min com o time operacional e implantar quadro de gestão à vista de doca.',
+  m5_p90_sem5_8: 'Semanas 5 a 8: Mensurar resultado: Reduzir tempo de doca em 30 min (tempo) e zerar horas extras da equipe matutina (economia de R$ 6.200/mês).',
+  m5_p90_sem9_12: 'Semanas 9 a 12: Retomar a conversa com o gestor apresentando o dossiê de evidências e resultados de liderança: "Tô no caminho certo para o próximo nível?"',
+  m5_atualizacao_mensal: '"Queria te dar uma atualização rápida sobre aquele ponto de liderança de time que conversamos: assumi o alinhamento diário e a pontualidade subiu para 98%."',
+  m5_decisao_sinal: 'Feedback claro com metas alinhadas. Há caminho concreto para a promoção de supervisão no próximo ciclo.',
+
+  // Retrocompatibilidade
+  m5_dec1_avalia: 'Nota 8 — Conhece meus resultados e apoia o próximo passo.',
+  m5_dec2_avalia: 'Nota 4 — Precisa conhecer o impacto financeiro.',
+  m5_dec3_avalia: 'Nota 5 — Tem mapeamento de sucessão em andamento.',
+  m5_conv_metas: '1. Assumir liderança diária do pátio; 2. Reduzir horas extras.',
+  m5_conv_prazo: '90 dias (revisita em Janeiro)',
+  m5_cenario: 'Cenário 1: Metas claras e gestor como aliado.',
+  m5_conv_material: 'Portfólio PONTE consolidado e Relatório de Impacto',
+  m5_plano90: 'Semanas 1-4: DDS matutinos e liderança do turno.\nSemanas 5-8: Redução de 30 min de doca e R$ 6.200 em horas extras.\nSemanas 9-12: Retomada com evidências e validação para promoção.'
 };
 
 // Retrocompatibility alias
@@ -215,6 +263,14 @@ export const demoExampleChecks: Record<string, Record<number, boolean>> = {
     1: true,
     2: false,
     3: false
+  },
+  m5_check: {
+    0: true,
+    1: true,
+    2: true,
+    3: true,
+    4: true,
+    5: false
   }
 };
 
@@ -249,7 +305,7 @@ export const isContaminatedDemoChecks = (data: any): boolean => {
 export const initialRemindersList: ReminderItem[] = [
   {
     id: 'rem-1',
-    title: 'Postar áudio de 90s no grupo da turma',
+    title: 'Postar áudio de 60S no grupo da turma',
     dueDate: 'Hoje, até 20h',
     type: 'exercicio',
     completed: false
@@ -263,7 +319,7 @@ export const initialRemindersList: ReminderItem[] = [
   },
   {
     id: 'rem-3',
-    title: 'Conversa de Carreira com gestor (Aula 5.3)',
+    title: 'Conversa de Carreira com gestor (Aula 5.2)',
     dueDate: '15 de Outubro',
     type: 'conversa',
     completed: false

@@ -54,7 +54,7 @@ export const FullPrintView: React.FC<FullPrintViewProps> = ({ fields, checks, us
             <p className="mt-1 text-slate-700">{f('m1_auto1')}</p>
           </div>
           <div className="p-3 bg-emerald-50 border border-emerald-200 rounded">
-            <strong>Como um supervisor descreve:</strong>
+            <strong>Como um gestor descreve:</strong>
             <p className="mt-1 text-slate-800">{f('m1_auto2')}</p>
           </div>
         </div>
@@ -122,25 +122,65 @@ export const FullPrintView: React.FC<FullPrintViewProps> = ({ fields, checks, us
         </div>
       </div>
 
-      {/* Módulo E - Estar Visível */}
+      {/* Módulo E - A Porta */}
       <div className="print-page-break print-break-inside-avoid mb-8 pt-4">
         <PrintHeader
-          moduleName="E - Estar Visível"
+          moduleName="E - A Porta (Visibilidade para quem decide)"
           moduleLetter="E"
           user={user}
           currentRole={f('m0_cargo')}
           targetRole={f('m0_alvo')}
         />
-        <h3 className="font-bold text-sm text-[#0B2046] border-b pb-1 mb-3">Conversa de Carreira</h3>
-        <div className="p-3 bg-slate-50 border border-slate-200 rounded text-xs space-y-1.5 mb-4">
-          <div><strong>Data da conversa:</strong> {f('m5_conv_data')}</div>
-          <div><strong>Metas acordadas:</strong> {f('m5_conv_metas')}</div>
-          <div><strong>Prazo estipulado:</strong> {f('m5_conv_prazo')}</div>
-          <div><strong>Cenário:</strong> {f('m5_cenario')}</div>
-          <div className="pt-2 border-t">
-            <strong>Plano de 90 dias:</strong>
-            <p className="mt-1 whitespace-pre-line">{f('m5_plano90')}</p>
+        <h3 className="font-bold text-sm text-[#0B2046] border-b pb-1 mb-3">Termômetro de Relação dos 3 Decisores</h3>
+        <div className="grid grid-cols-3 gap-3 text-xs mb-3">
+          <div className="p-2.5 bg-slate-50 border border-slate-200 rounded">
+            <strong>Gestor Direto:</strong>
+            <p className="mt-0.5 text-slate-700">{f('m5_dec1_nome') || '—'}</p>
+            <p className="font-bold text-sky-700 mt-1">Nota: {f('m5_dec1_nota') || '—'}/10</p>
           </div>
+          <div className="p-2.5 bg-slate-50 border border-slate-200 rounded">
+            <strong>Gestor do teu Gestor:</strong>
+            <p className="mt-0.5 text-slate-700">{f('m5_dec2_nome') || '—'}</p>
+            <p className="font-bold text-sky-700 mt-1">Nota: {f('m5_dec2_nota') || '—'}/10</p>
+          </div>
+          <div className="p-2.5 bg-slate-50 border border-slate-200 rounded">
+            <strong>RH / BP:</strong>
+            <p className="mt-0.5 text-slate-700">{f('m5_dec3_nome') || '—'}</p>
+            <p className="font-bold text-sky-700 mt-1">Nota: {f('m5_dec3_nota') || '—'}/10</p>
+          </div>
+        </div>
+
+        {f('m5_gap_urgente') && (
+          <p className="text-xs text-rose-900 bg-rose-50 p-2.5 rounded border border-rose-200 mb-3">
+            <strong>Gap Mais Urgente:</strong> {f('m5_gap_urgente')}
+          </p>
+        )}
+
+        {f('m5_contato_decisor') && (
+          <div className="p-2.5 bg-slate-50 border border-slate-200 rounded text-xs mb-3">
+            <strong>Ponto de Contato Planejado (2 Semanas):</strong> {f('m5_contato_decisor')} ({f('m5_contato_tipo')}) — {f('m5_contato_quando')}
+            <p className="mt-0.5 italic text-slate-600">Roteiro: "{f('m5_contato_script')}"</p>
+          </div>
+        )}
+
+        <h3 className="font-bold text-sm text-[#0B2046] border-b pb-1 mb-3">Conversa de Carreira com o Gestor</h3>
+        <div className="p-3 bg-amber-50/70 border border-amber-200 rounded text-xs space-y-1.5 mb-3">
+          <div><strong>Data marcada / realizada:</strong> {f('m5_conv_data')}</div>
+          <div><strong>Feedback honesto do gestor:</strong> {f('m5_conv_feedback') || f('m5_conv_metas')}</div>
+          <div><strong>Lacuna apontada para o próximo nível:</strong> {f('m5_conv_lacuna')}</div>
+          {f('m5_conv_objecao') && <div><strong>Objeção enfrentada:</strong> {f('m5_conv_objecao')}</div>}
+        </div>
+
+        <h3 className="font-bold text-sm text-[#0B2046] border-b pb-1 mb-3">Plano de 90 Dias & Acompanhamento</h3>
+        <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded text-xs space-y-1.5 mb-4">
+          <div><strong>Semanas 1 a 4 (Atacar 1ª lacuna):</strong> {f('m5_p90_sem1_4')}</div>
+          <div><strong>Semanas 5 a 8 (Resultados mensuráveis):</strong> {f('m5_p90_sem5_8')}</div>
+          <div><strong>Semanas 9 a 12 (Retomar com evidências):</strong> {f('m5_p90_sem9_12')}</div>
+          {f('m5_atualizacao_mensal') && (
+            <div className="pt-1.5 border-t border-emerald-200">
+              <strong>Atualização mensal sem cobrança:</strong> <em>"{f('m5_atualizacao_mensal')}"</em>
+            </div>
+          )}
         </div>
       </div>
     </div>

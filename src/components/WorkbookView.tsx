@@ -34,6 +34,7 @@ export const WorkbookView: React.FC<WorkbookViewProps> = ({
 }) => {
   const [copiedCommitment, setCopiedCommitment] = useState(false);
   const [copiedScript, setCopiedScript] = useState(false);
+  const [copiedObjections, setCopiedObjections] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
@@ -88,10 +89,17 @@ export const WorkbookView: React.FC<WorkbookViewProps> = ({
   };
 
   const handleCopyCareerScript = () => {
-    const scriptText = `Script da Conversa de Carreira (Método PONTE):\n1. "Como você avalia minha evolução nos últimos 6 meses?"\n2. "O que falta pra eu estar pronto pro próximo passo?"\n3. "Se eu trabalhar nesses pontos em 3-6 meses, a gente revisita?"\n4. "Tem algo que posso contar com teu apoio?"`;
+    const scriptText = `Script da Conversa de Carreira (Método PONTE — 4 Perguntas na ordem exata):\n1. "Quero te pedir um feedback honesto sobre o meu trabalho nos últimos meses."\n2. "Na sua visão, o que eu precisaria fazer diferente para ser considerado para o próximo nível?"\n3. "Existe algum projeto ou competência específica que você acha que eu deveria desenvolver?"\n4. "Posso te mandar um plano de 90 dias baseado no que você me disser?"`;
     navigator.clipboard.writeText(scriptText);
     setCopiedScript(true);
     setTimeout(() => setCopiedScript(false), 2500);
+  };
+
+  const handleCopyObjections = () => {
+    const objectionsText = `As 5 Objeções e Respostas Estratégicas (Método PONTE):\n1. "Não tem vaga agora" → "Entendo. Quero estar pronto quando tiver. O que posso fazer enquanto isso?"\n2. "Você precisa de mais tempo" → "Quanto tempo você imagina? E o que eu deveria entregar nesse período?"\n3. "Tem outras pessoas na fila" → "O que me diferenciaria dos outros candidatos na sua visão?"\n4. "Não depende só de mim" → "Quem mais precisa me conhecer? Como posso facilitar isso?"\n5. "Agora não é o momento" → "Quando seria um bom momento pra retomar essa conversa?"\n\nRegra de Ouro: Toda resposta termina com uma pergunta. Você nunca encerra a conversa. Você sempre abre a próxima porta.`;
+    navigator.clipboard.writeText(objectionsText);
+    setCopiedObjections(true);
+    setTimeout(() => setCopiedObjections(false), 2500);
   };
 
   // Reusable Field Component
@@ -313,7 +321,7 @@ export const WorkbookView: React.FC<WorkbookViewProps> = ({
             )}
             {renderField(
               'm1_auto2',
-              '2. Como um supervisor descreveria exatamente o mesmo trabalho?',
+              '2. Como um gestor descreveria exatamente o mesmo trabalho?',
               'Ex: Garanto a produtividade do fluxo logístico e mitigo custos de ociosidade.',
               2
             )}
@@ -344,7 +352,7 @@ export const WorkbookView: React.FC<WorkbookViewProps> = ({
               'Apliquei as 2 perguntas em pelo menos 5 situações',
               'Transformei reclamação em proposta antes de falar com o gestor',
               'Cheguei 10 min antes e fiquei 5 depois em reunião importante',
-              'Postei áudio de 90s no grupo contando 1 situação real',
+              'Postei áudio de 60S no grupo contando 1 situação real',
             ])}
           </div>
         );
@@ -583,85 +591,379 @@ export const WorkbookView: React.FC<WorkbookViewProps> = ({
       case 5:
         return (
           <div>
-            {renderQuote('Ser bom não basta. Ser visto sendo bom é o que promove.')}
+            {renderQuote('Se você não achar que está pronto, ninguém mais vai achar — Carlos Martins')}
 
-            {renderSectionHeader('Aula 5.1 — Mapa dos 3 Decisores')}
-            {[
-              { n: 1, role: 'Gestor direto', cond: 'precisa QUERER' },
-              { n: 2, role: 'Gerente/Diretor acima', cond: 'precisa CONHECER' },
-              { n: 3, role: 'RH / Head de Gente', cond: 'precisa ter MAPEADO' },
-            ].map(({ n, role, cond }) => (
-              <div
-                key={n}
-                className="mb-4 p-3.5 bg-slate-50 rounded-xl border border-slate-200"
-              >
-                <div className="text-xs font-bold text-sky-800 mb-1">
-                  Decisor {n} — {role}{' '}
-                  <span className="font-normal text-slate-500">({cond})</span>
+            {/* Abertura do Módulo */}
+            <div className="bg-gradient-to-r from-slate-900 to-[#0B2046] text-white p-5 rounded-2xl mb-6 shadow-xs border border-slate-800">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block mb-1">
+                Pilar da Semana: Visibilidade para quem decide
+              </span>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-2">
+                Módulo 5 — A Porta
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Até agora, todo o trabalho foi concentrado em ti. Tu mudou a postura, o olhar, a voz, criou uma saída. Tudo isso dependia de ti.
+                Agora muda: pela primeira vez, o movimento não é teu. <strong className="text-white">A porta da promoção não abre de dentro. Ela abre de fora.</strong> Mas só pra quem bateu. Tu vai até quem decide e mostra que tá pronto.
+              </p>
+            </div>
+
+            {/* Aula 5.1 — O Sistema de Visibilidade */}
+            {renderSectionHeader('Aula 5.1 — O Sistema de Visibilidade', 'Resgate os 3 decisores da Aula 3.1 e avalie a qualidade da relação no Termômetro')}
+
+            {/* Termômetro Scale Reference */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-700 block mb-2">
+                Escala do Termômetro de Relação (0 a 10):
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                <div className="p-2.5 bg-rose-50 border border-rose-200 rounded-lg text-rose-900">
+                  <strong>Nota 0:</strong> Não sabe quem eu sou.
                 </div>
-                {renderField(`m5_dec${n}_nome`, 'Nome e cargo', '', 1)}
-                {renderField(
-                  `m5_dec${n}_avalia`,
-                  'Ele sabe quem sou? Sabe o que entreguei? Tem motivo pra lembrar?',
-                  '',
-                  2
-                )}
-              </div>
-            ))}
-
-            {renderSectionHeader('Aula 5.2 — Plano de 3 Contatos Mensais')}
-            {[1, 2, 3].map((n) => (
-              <div
-                key={n}
-                className="mb-4 p-3.5 bg-slate-50 rounded-xl border border-slate-200"
-              >
-                <div className="text-xs font-bold text-sky-800 mb-1">
-                  Plano para Decisor {n}
+                <div className="p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-amber-900">
+                  <strong>Nota 5:</strong> Sabe meu nome, mas não faz ideia do que eu entrego.
                 </div>
-                {renderField(`m5_cont${n}_formato`, 'Formato', 'Ex: Pergunta pontual em reunião / e-mail com insight / conversa de corredor', 1)}
-                {renderField(`m5_cont${n}_quando`, 'Próxima oportunidade (quando e onde)', 'Data ou evento', 1)}
-                {renderField(`m5_cont${n}_script`, 'O que vou dizer ou mandar', 'Roteiro conciso e focado em valor', 2)}
+                <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-900">
+                  <strong>Nota 10:</strong> Sabe quem sou, conhece meus resultados e me enxerga como o próximo líder.
+                </div>
               </div>
-            ))}
+            </div>
 
-            {renderSectionHeader('Aula 5.3 — A Conversa de Carreira')}
-            {renderField('m5_conv_data', 'Data marcada para a conversa', 'Ex: Próxima terça-feira às 10h', 1)}
-            {renderField('m5_conv_material', 'Material que vou levar', 'Ex: Mapa de Área, Relatório de Impacto, Diário de Travessia', 1)}
+            {/* Decisores Evaluation Cards */}
+            <div className="space-y-4 mb-5">
+              {[
+                {
+                  idPrefix: 'm5_dec1',
+                  role: 'Decisor 1: Gestor direto',
+                  requirement: 'precisa QUERER',
+                  statusDesc: 'Já tem o Relatório de Impacto mensal (Aula 3.2)',
+                  badgeColor: 'bg-sky-100 text-sky-800 border-sky-300',
+                },
+                {
+                  idPrefix: 'm5_dec2',
+                  role: 'Decisor 2: Gestor do teu Gestor',
+                  requirement: 'precisa CONHECER',
+                  statusDesc: 'Meta: 1 contato mensal planejado',
+                  badgeColor: 'bg-indigo-100 text-indigo-800 border-indigo-300',
+                },
+                {
+                  idPrefix: 'm5_dec3',
+                  role: 'Decisor 3: RH / Business Partner de Gente',
+                  requirement: 'precisa ter MAPEADO',
+                  statusDesc: 'Meta: 1 contato mensal planejado',
+                  badgeColor: 'bg-slate-100 text-slate-800 border-slate-300',
+                },
+              ].map(({ idPrefix, role, requirement, statusDesc, badgeColor }) => (
+                <div key={idPrefix} className="p-4 bg-slate-50/80 rounded-xl border border-slate-200">
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <span className="text-xs sm:text-sm font-bold text-slate-900">
+                      {role}{' '}
+                      <span className="text-xs font-semibold text-slate-500 italic">
+                        ({requirement})
+                      </span>
+                    </span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${badgeColor}`}>
+                      {statusDesc}
+                    </span>
+                  </div>
 
-            <div className="bg-amber-50/80 border border-amber-300/80 rounded-xl p-4 my-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold text-amber-950 uppercase tracking-wider">
-                  Script — 4 Perguntas na Ordem (Método PONTE)
+                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 items-start">
+                    <div className="sm:col-span-3">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">
+                        Nome e cargo do decisor:
+                      </label>
+                      <input
+                        type="text"
+                        value={f(`${idPrefix}_nome`)}
+                        onChange={(e) => onFieldChange(`${idPrefix}_nome`, e.target.value)}
+                        placeholder="Ex: Carlos Eduardo (Gerente de Operações)"
+                        className="w-full px-3 py-2 text-xs sm:text-sm bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-sky-500/30 focus:border-sky-600 transition-all shadow-2xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">
+                        Nota no Termômetro (0 a 10):
+                      </label>
+                      <input
+                        type="text"
+                        value={f(`${idPrefix}_nota`)}
+                        onChange={(e) => onFieldChange(`${idPrefix}_nota`, e.target.value)}
+                        placeholder="0 a 10"
+                        className="w-full px-3 py-2 text-xs sm:text-sm text-center font-bold bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-sky-500/30 focus:border-sky-600 transition-all shadow-2xs"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {renderField(
+              'm5_gap_urgente',
+              'Meu Gap Mais Urgente (a nota mais baixa do Termômetro)',
+              'A nota mais baixa é o teu gap mais urgente. Quem é e por que a relação está nessa nota?',
+              2,
+              'Ex: Diretor Roberto — Nota 4. Ele sabe meu nome por alto, mas não tem clareza dos projetos de redução de custos que liderei na doca.'
+            )}
+
+            {/* Contato vs Sistema */}
+            <div className="my-5 p-4 bg-sky-50/70 border border-sky-200 rounded-xl text-xs sm:text-sm leading-relaxed text-slate-800">
+              <span className="text-xs font-bold uppercase tracking-wider text-sky-950 block mb-1">
+                Contato vs. Sistema (108 Registros em 12 Meses)
+              </span>
+              <p className="mb-2">
+                <strong>Contato</strong> depende de corredor vazio, timing e sorte. <strong>Sistema</strong> é diferente: todo mês, sem exceção, cada um dos 3 decisores recebe um sinal da tua existência. Planejado e com conteúdo.
+              </p>
+              <p className="text-xs text-sky-900 font-semibold mb-2">
+                Se fizer isso por 12 meses, são <strong>108 registros da tua existência</strong> para quem decide. Ninguém promove quem não lembra que existe.
+              </p>
+              <div className="text-xs text-slate-600 bg-white/80 p-2.5 rounded-lg border border-sky-100">
+                <strong>Tipos de contato para Decisores 2 e 3:</strong> E-mail curto pedindo opinião sobre um dado · Pergunta bem colocada em reunião · 5 minutos em reunião maior para mostrar resultado · Bom dia com uma informação relevante. (Natural, breve, sempre com conteúdo, nunca forçado).
+              </div>
+            </div>
+
+            {/* Exercício 5.1 */}
+            {renderSectionHeader('Exercício 5.1 — Ponto de Contato Planejado (Próximas 2 Semanas)', 'Para cada decisor com nota abaixo de 7, comece pelo de nota mais baixa')}
+
+            <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 mb-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Decisor Prioritário (nota &lt; 7):
+                  </label>
+                  <input
+                    type="text"
+                    value={f('m5_contato_decisor')}
+                    onChange={(e) => onFieldChange('m5_contato_decisor', e.target.value)}
+                    placeholder="Ex: Diretor Roberto Antunes"
+                    className="w-full px-3 py-2 text-xs sm:text-sm bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-sky-500/30 focus:border-sky-600 transition-all shadow-2xs"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Formato do contato:
+                  </label>
+                  <input
+                    type="text"
+                    value={f('m5_contato_tipo')}
+                    onChange={(e) => onFieldChange('m5_contato_tipo', e.target.value)}
+                    placeholder="Ex: E-mail curto pedindo opinião sobre dado de doca"
+                    className="w-full px-3 py-2 text-xs sm:text-sm bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-sky-500/30 focus:border-sky-600 transition-all shadow-2xs"
+                  />
+                </div>
+              </div>
+
+              {renderField(
+                'm5_contato_quando',
+                'Quando nas próximas 2 semanas (data ou oportunidade)',
+                'Ex: Próxima terça-feira após o fechamento dos KPIs operacionais.',
+                1
+              )}
+              {renderField(
+                'm5_contato_script',
+                'O que vou dizer ou enviar (roteiro conciso)',
+                'Ex: "Roberto, bom dia. Fechamos a redução de 28% no tempo de doca da filial. Como você tem conduzido a padronização das outras unidades, gostaria de saber se esse modelo cabe na pauta do próximo comitê mensal."',
+                2
+              )}
+            </div>
+
+            {/* Aula 5.2 — A Conversa de Carreira */}
+            {renderSectionHeader('Aula 5.2 — A Conversa de Carreira', 'A conversa mais importante do curso: mostrar prontidão e colocar o gestor como aliado')}
+
+            {/* O que não é vs o que é */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+              <div className="p-3.5 bg-rose-50/70 border border-rose-200 rounded-xl text-xs">
+                <span className="font-bold text-rose-800 uppercase block mb-1">
+                  O que NÃO é:
+                </span>
+                <p className="text-slate-700 leading-relaxed">
+                  Não é pedir promoção (<em>"Quero ser promovido"</em>). Se você fizer isso, o gestor se sente pressionado e reage se defendendo.
+                </p>
+              </div>
+              <div className="p-3.5 bg-emerald-50/70 border border-emerald-200 rounded-xl text-xs">
+                <span className="font-bold text-emerald-800 uppercase block mb-1">
+                  O que É:
+                </span>
+                <p className="text-slate-700 leading-relaxed">
+                  É mostrar que está pronto e perguntar o que falta (<em>"Tô pronto. O que falta?"</em>). Colocar o gestor como aliado, não como obstáculo.
+                </p>
+              </div>
+            </div>
+
+            {/* Script das 4 Perguntas */}
+            <div className="bg-amber-50/80 border border-amber-300/80 rounded-xl p-4 sm:p-5 mb-5 shadow-xs">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-bold text-amber-950 uppercase tracking-wider flex items-center gap-1.5">
+                  Script — As 4 Perguntas na Ordem Exata
                 </span>
                 <button
                   type="button"
                   onClick={handleCopyCareerScript}
-                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-900 bg-amber-200/70 hover:bg-amber-200 px-2.5 py-1 rounded-md transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-900 bg-amber-200/70 hover:bg-amber-200 px-2.5 py-1 rounded-md transition-colors cursor-pointer shadow-2xs"
                 >
                   {copiedScript ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                   <span>{copiedScript ? 'Copiado!' : 'Copiar Script'}</span>
                 </button>
               </div>
-              <ol className="text-xs sm:text-sm text-slate-800 space-y-1.5 list-decimal list-inside leading-relaxed font-medium">
-                <li>"Como você avalia minha evolução nos últimos 6 meses?"</li>
-                <li>"O que falta pra eu estar pronto pro próximo passo?"</li>
-                <li>"Se eu trabalhar nesses pontos em 3-6 meses, a gente revisita?"</li>
-                <li>"Tem algo que posso contar com teu apoio?"</li>
-              </ol>
+              <p className="text-[11px] text-amber-900/80 italic mb-3">
+                Não pula, não inverte, não improvisa. Siga a ordem exata das 4 perguntas:
+              </p>
+              <div className="space-y-2.5 text-xs sm:text-sm">
+                <div className="p-2.5 bg-white/80 rounded-lg border border-amber-200/60">
+                  <span className="font-bold text-amber-950">1ª: </span>
+                  <span className="text-slate-900 font-medium">"Quero te pedir um feedback honesto sobre o meu trabalho nos últimos meses."</span>
+                  <p className="text-[11px] text-slate-500 mt-0.5 italic">Faz o gestor falar primeiro. Ouça sem interromper e sem se defender.</p>
+                </div>
+                <div className="p-2.5 bg-white/80 rounded-lg border border-amber-200/60">
+                  <span className="font-bold text-amber-950">2ª: </span>
+                  <span className="text-slate-900 font-medium">"Na sua visão, o que eu precisaria fazer diferente para ser considerado para o próximo nível?"</span>
+                  <p className="text-[11px] text-slate-500 mt-0.5 italic">Coloca a palavra 'próximo nível' na mesa sem pedir promoção. É sutil, mas muda tudo.</p>
+                </div>
+                <div className="p-2.5 bg-white/80 rounded-lg border border-amber-200/60">
+                  <span className="font-bold text-amber-950">3ª: </span>
+                  <span className="text-slate-900 font-medium">"Existe algum projeto ou competência específica que você acha que eu deveria desenvolver?"</span>
+                  <p className="text-[11px] text-slate-500 mt-0.5 italic">Transforma a conversa em plano de ação. O gestor passa a ser o seu orientador.</p>
+                </div>
+                <div className="p-2.5 bg-white/80 rounded-lg border border-amber-200/60">
+                  <span className="font-bold text-amber-950">4ª: </span>
+                  <span className="text-slate-900 font-medium">"Posso te mandar um plano de 90 dias baseado no que você me disser?"</span>
+                  <p className="text-[11px] text-slate-500 mt-0.5 italic">A frase mais poderosa: cria um compromisso mútuo. Ele vai esperar esse plano.</p>
+                </div>
+              </div>
             </div>
 
-            {renderField('m5_conv_resposta', 'O que meu gestor respondeu (resumo)', 'Resumo das falas e percepção dele', 3)}
-            {renderField('m5_conv_metas', 'Metas que ficaram definidas', 'Entregas ou competências acordadas', 2)}
-            {renderField('m5_conv_prazo', 'Prazo para revisitar a conversa', 'Data ou mês combinado', 1)}
+            {/* As 5 Objeções */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5 mb-5 shadow-xs">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                  As 5 Objeções do Gestor e Respostas Estratégicas
+                </span>
+                <button
+                  type="button"
+                  onClick={handleCopyObjections}
+                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-100 px-2.5 py-1 rounded-md transition-colors cursor-pointer shadow-2xs"
+                >
+                  {copiedObjections ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                  <span>{copiedObjections ? 'Copiado!' : 'Copiar 5 Objeções'}</span>
+                </button>
+              </div>
+              <p className="text-[11px] text-slate-500 mb-3">
+                Regra de Ouro: Toda resposta termina com uma pergunta. Você nunca encerra a conversa. Você sempre abre a próxima porta.
+              </p>
 
-            {renderSectionHeader('Aula 5.4 — Cenário pós-conversa')}
-            {renderField(
-              'm5_cenario',
-              'Em qual cenário estou?',
-              'Cenário 1: Metas claras / Cenário 2: Resposta vaga pela 2ª vez / Cenário 3: "Ainda não por causa de X"',
-              2
-            )}
-            {renderField('m5_plano90', 'Meu plano de ação para os próximos 90 dias', 'As ações decisivas que você executará para selar a promoção.', 3)}
+              <div className="space-y-2 text-xs">
+                <div className="p-2.5 bg-white rounded-lg border border-slate-200">
+                  <div className="font-bold text-rose-800 mb-0.5">1. Se disser: "Não tem vaga agora"</div>
+                  <div className="text-slate-800 font-medium">Tu responde: <em>"Entendo. Quero estar pronto quando tiver. O que posso fazer enquanto isso?"</em></div>
+                </div>
+                <div className="p-2.5 bg-white rounded-lg border border-slate-200">
+                  <div className="font-bold text-rose-800 mb-0.5">2. Se disser: "Você precisa de mais tempo"</div>
+                  <div className="text-slate-800 font-medium">Tu pergunta: <em>"Quanto tempo você imagina? E o que eu deveria entregar nesse período?"</em></div>
+                </div>
+                <div className="p-2.5 bg-white rounded-lg border border-slate-200">
+                  <div className="font-bold text-rose-800 mb-0.5">3. Se disser: "Tem outras pessoas na fila"</div>
+                  <div className="text-slate-800 font-medium">Tu pergunta: <em>"O que me diferenciaria dos outros candidatos na sua visão?"</em></div>
+                </div>
+                <div className="p-2.5 bg-white rounded-lg border border-slate-200">
+                  <div className="font-bold text-rose-800 mb-0.5">4. Se disser: "Não depende só de mim"</div>
+                  <div className="text-slate-800 font-medium">Tu pergunta: <em>"Quem mais precisa me conhecer? Como posso facilitar isso?"</em> <span className="text-[10px] text-sky-700 italic block mt-0.5">(Conecta direto com os Decisores 2 e 3 do Termômetro!)</span></div>
+                </div>
+                <div className="p-2.5 bg-white rounded-lg border border-slate-200">
+                  <div className="font-bold text-rose-800 mb-0.5">5. Se disser: "Agora não é o momento"</div>
+                  <div className="text-slate-800 font-medium">Tu pergunta: <em>"Quando seria um bom momento pra retomar essa conversa?"</em></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Exercício de Campo — Agendamento e Registro */}
+            {renderSectionHeader('Exercício de Campo — Agendamento & Registro da Conversa', 'Ter a conversa de carreira com o teu gestor (se não der essa semana, marque para as próximas 2 semanas)')}
+
+            {renderField('m5_conv_data', 'Data marcada no calendário para a conversa', 'Ex: Quarta-feira, 15 de Outubro às 14h', 1)}
+            {renderField('m5_conv_feedback', 'Feedback honesto recebido do gestor (Perguntas 1 e 2)', 'O que o gestor destacou sobre o seu trabalho e visão do próximo nível?', 2)}
+            {renderField('m5_conv_lacuna', 'Lacuna ou competência apontada para desenvolver (Pergunta 3)', 'O que ele disse que você precisa fazer ou desenvolver para ser considerado?', 2)}
+            {renderField('m5_conv_objecao', 'Objeção enfrentada e resposta utilizada (se houver)', 'Ex: Mencionou "não depende só de mim", perguntei quem mais precisa me conhecer e alinhamos contato com o diretor.', 2)}
+
+            {/* Aula 5.3 — Depois da Conversa */}
+            {renderSectionHeader('Aula 5.3 — Depois da Conversa & Plano de 90 Dias', 'Cumprindo o compromisso da 4ª pergunta: 3 blocos de ação')}
+
+            <div className="space-y-4 mb-5">
+              <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                <span className="text-xs font-bold uppercase text-sky-900 block mb-1">
+                  Fase 1 — Semanas 1 a 4: Atacar a 1ª Lacuna
+                </span>
+                <p className="text-xs text-slate-500 mb-2">
+                  Atacar a primeira lacuna que o gestor identificou. A mais importante. Não tente resolver tudo, escolha uma.
+                </p>
+                <textarea
+                  value={f('m5_p90_sem1_4')}
+                  onChange={(e) => onFieldChange('m5_p90_sem1_4', e.target.value)}
+                  rows={2}
+                  placeholder="Ex: Assumir os alinhamentos operacionais matutinos com a equipe e padronizar checklist de passagem de turno..."
+                  className="w-full px-3.5 py-2 text-xs sm:text-sm bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-sky-500/30 focus:border-sky-600 transition-all shadow-2xs"
+                />
+              </div>
+
+              <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                <span className="text-xs font-bold uppercase text-sky-900 block mb-1">
+                  Fase 2 — Semanas 5 a 8: Mostrar Resultado Mensurável
+                </span>
+                <p className="text-xs text-slate-500 mb-2">
+                  Não opinião ou sensação. Número, percentual, tempo poupado ou risco eliminado (as 4 moedas do Módulo 3).
+                </p>
+                <textarea
+                  value={f('m5_p90_sem5_8')}
+                  onChange={(e) => onFieldChange('m5_p90_sem5_8', e.target.value)}
+                  rows={2}
+                  placeholder="Ex: Reduzir tempo de permanência de doca em 30 min (tempo) e zerar horas extras da equipe matutina (R$ 6.200 poupados)..."
+                  className="w-full px-3.5 py-2 text-xs sm:text-sm bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-sky-500/30 focus:border-sky-600 transition-all shadow-2xs"
+                />
+              </div>
+
+              <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                <span className="text-xs font-bold uppercase text-sky-900 block mb-1">
+                  Fase 3 — Semanas 9 a 12: Retomar a Conversa com Evidências
+                </span>
+                <p className="text-xs text-slate-500 mb-2">
+                  Não pede nada. Mostra o que fez e pergunta com postura: "Tô no caminho certo?"
+                </p>
+                <textarea
+                  value={f('m5_p90_sem9_12')}
+                  onChange={(e) => onFieldChange('m5_p90_sem9_12', e.target.value)}
+                  rows={2}
+                  placeholder="Ex: Apresentar dossiê de resultados nas 4 moedas e alinhar próximos passos rumo à supervisão..."
+                  className="w-full px-3.5 py-2 text-xs sm:text-sm bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-sky-500/30 focus:border-sky-600 transition-all shadow-2xs"
+                />
+              </div>
+            </div>
+
+            {/* A Régua de Acompanhamento */}
+            <div className="p-4 bg-emerald-50/70 border border-emerald-200 rounded-xl mb-5">
+              <span className="text-xs font-bold uppercase text-emerald-900 block mb-1">
+                A Régua: 1 Atualização por Mês Sem Cobrança
+              </span>
+              <p className="text-xs text-emerald-950 mb-2">
+                A frase que funciona entre uma conversa e outra:
+              </p>
+              <div className="p-2.5 bg-white rounded-lg border border-emerald-200 text-xs sm:text-sm font-medium text-emerald-950 italic mb-3">
+                "Queria te dar uma atualização rápida sobre aquele ponto que a gente conversou. Fiz X, resultado foi Y."
+              </div>
+              {renderField(
+                'm5_atualizacao_mensal',
+                'Minha frase de atualização rápida planejada para o Mês 1',
+                'Sem pedir nada, sem perguntar "e a promoção?". O gestor entende a mensagem.',
+                2,
+                'Ex: "Queria te dar uma atualização rápida sobre a gestão do pátio: assumi os DDS diários e a pontualidade subiu para 98%."'
+              )}
+            </div>
+
+            {/* Checklist do Módulo 5 */}
+            {renderSectionHeader('Checklist da Semana — A Porta')}
+            {renderChecklist('m5_check', [
+              'Avaliei o Termômetro de Relação (0 a 10) dos 3 Decisores e identifiquei o gap urgente',
+              'Planejei 1 ponto de contato nas próximas 2 semanas para os decisores com nota < 7',
+              'Agendei a data da Conversa de Carreira no calendário com meu gestor',
+              'Treinei o script das 4 perguntas e as respostas para as 5 objeções',
+              'Estruturei o Plano de 90 Dias (Semanas 1-4, 5-8 e 9-12) baseado na lacuna',
+              'Consolidei o Portfólio PONTE completo com os 5 pilares da travessia',
+            ])}
           </div>
         );
 
@@ -673,7 +975,7 @@ export const WorkbookView: React.FC<WorkbookViewProps> = ({
                 PORTFÓLIO PONTE
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
-                Consolidação da travessia — 5 semanas de método
+                Consolidação da travessia — Os 5 pilares do Método PONTE
               </p>
             </div>
 
@@ -695,9 +997,9 @@ export const WorkbookView: React.FC<WorkbookViewProps> = ({
               </div>
             </div>
 
-            {/* Antes e Depois */}
+            {/* Módulo 1 - Postura: Antes e Depois */}
             <div>
-              {renderSectionHeader('Antes e Depois — Transformação de Autoimagem')}
+              {renderSectionHeader('1. Pilar P — Postura: Transformação de Autoimagem')}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div className="p-4 bg-rose-50/70 rounded-xl border border-rose-200">
                   <div className="text-xs font-bold text-rose-800 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
@@ -711,26 +1013,26 @@ export const WorkbookView: React.FC<WorkbookViewProps> = ({
                 <div className="p-4 bg-emerald-50/70 rounded-xl border border-emerald-200">
                   <div className="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    Depois (Como um supervisor descreve)
+                    Depois (Como um gestor descreve)
                   </div>
                   <p className="text-xs sm:text-sm text-slate-700 italic leading-relaxed">
-                    {f('m1_auto2') || 'Como um supervisor descreve exatamente o mesmo trabalho.'}
+                    {f('m1_auto2') || 'Como um gestor descreve exatamente o mesmo trabalho.'}
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Meu MCI */}
+            {/* Módulo 2 - Operação: Meu MCI */}
             <div>
-              {renderSectionHeader('Meu MCI (Meta Crucialmente Importante)')}
+              {renderSectionHeader('2. Pilar O — Operação: MCI (Meta Crucialmente Importante)')}
               <div className="p-4 bg-sky-50/80 rounded-xl border border-sky-200 text-xs sm:text-sm font-semibold text-sky-950 leading-relaxed">
                 {f('m2_mci') || 'Ainda não definido — preencha no Módulo 2 (Operação).'}
               </div>
             </div>
 
-            {/* Primeiro Relatório de Impacto */}
+            {/* Módulo 3 - Números: Primeiro Relatório de Impacto */}
             <div>
-              {renderSectionHeader('Primeiro Relatório de Impacto Enviado')}
+              {renderSectionHeader('3. Pilar N — Números: Relatório de Impacto Mensal')}
               <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs sm:text-sm space-y-2">
                 <div>
                   <strong className="text-slate-800">Resultado 1:</strong>{' '}
@@ -750,12 +1052,12 @@ export const WorkbookView: React.FC<WorkbookViewProps> = ({
               </div>
             </div>
 
-            {/* Corrente Quebrada */}
+            {/* Módulo 4 - Transferir: Transbordo Operacional */}
             <div>
-              {renderSectionHeader('Corrente Quebrada — Transbordo Operacional')}
+              {renderSectionHeader('4. Pilar T — Transferir: Transbordo Operacional')}
               <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs sm:text-sm space-y-2">
                 <div>
-                  <strong className="text-slate-800">Rotina documentada:</strong>{' '}
+                  <strong className="text-slate-800">Rotina documentada (POP/Checklist):</strong>{' '}
                   <span className="text-slate-700">{f('m4_doc_rotina') || '—'}</span>
                 </div>
                 <div>
@@ -769,44 +1071,102 @@ export const WorkbookView: React.FC<WorkbookViewProps> = ({
               </div>
             </div>
 
-            {/* Conversa de Carreira */}
+            {/* Módulo 5 - A Porta: Sistema de Visibilidade & Conversa de Carreira */}
             <div>
-              {renderSectionHeader('Resultado da Conversa de Carreira')}
-              <div className="p-4 bg-amber-50/70 rounded-xl border border-amber-200 text-xs sm:text-sm space-y-2">
-                <div>
-                  <strong className="text-slate-800">Data realizada:</strong>{' '}
-                  <span className="text-slate-700">{f('m5_conv_data') || '—'}</span>
+              {renderSectionHeader('5. Pilar E — A Porta: Sistema de Visibilidade & Conversa de Carreira')}
+              <div className="space-y-3">
+                {/* Termômetro dos 3 Decisores */}
+                <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs sm:text-sm space-y-2">
+                  <span className="text-xs font-bold text-sky-900 uppercase block mb-1">
+                    Termômetro de Relação dos 3 Decisores:
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <div className="p-2.5 bg-white rounded-lg border border-slate-200">
+                      <div className="font-semibold text-slate-800">Gestor Direto:</div>
+                      <div className="text-slate-600 truncate">{f('m5_dec1_nome') || 'Decisor 1'}</div>
+                      <div className="text-sky-700 font-bold mt-1">Nota: {f('m5_dec1_nota') || '—'}/10</div>
+                    </div>
+                    <div className="p-2.5 bg-white rounded-lg border border-slate-200">
+                      <div className="font-semibold text-slate-800">Gestor do teu Gestor:</div>
+                      <div className="text-slate-600 truncate">{f('m5_dec2_nome') || 'Decisor 2'}</div>
+                      <div className="text-sky-700 font-bold mt-1">Nota: {f('m5_dec2_nota') || '—'}/10</div>
+                    </div>
+                    <div className="p-2.5 bg-white rounded-lg border border-slate-200">
+                      <div className="font-semibold text-slate-800">RH / BP:</div>
+                      <div className="text-slate-600 truncate">{f('m5_dec3_nome') || 'Decisor 3'}</div>
+                      <div className="text-sky-700 font-bold mt-1">Nota: {f('m5_dec3_nota') || '—'}/10</div>
+                    </div>
+                  </div>
+                  {f('m5_gap_urgente') && (
+                    <div className="pt-2 border-t border-slate-200 text-xs text-rose-900">
+                      <strong>Gap Mais Urgente:</strong> {f('m5_gap_urgente')}
+                    </div>
+                  )}
+                  {f('m5_contato_decisor') && (
+                    <div className="text-xs text-slate-700">
+                      <strong>Ponto de Contato Planejado:</strong> {f('m5_contato_decisor')} ({f('m5_contato_tipo')}) — {f('m5_contato_quando')}
+                    </div>
+                  )}
                 </div>
-                <div>
-                  <strong className="text-slate-800">Metas definidas:</strong>{' '}
-                  <span className="text-slate-700">{f('m5_conv_metas') || '—'}</span>
+
+                {/* Conversa de Carreira */}
+                <div className="p-4 bg-amber-50/70 rounded-xl border border-amber-200 text-xs sm:text-sm space-y-2">
+                  <span className="text-xs font-bold text-amber-950 uppercase block mb-1">
+                    Registro da Conversa de Carreira:
+                  </span>
+                  <div>
+                    <strong className="text-slate-800">Data marcada / realizada:</strong>{' '}
+                    <span className="text-slate-700">{f('m5_conv_data') || '—'}</span>
+                  </div>
+                  <div>
+                    <strong className="text-slate-800">Feedback do gestor:</strong>{' '}
+                    <span className="text-slate-700">{f('m5_conv_feedback') || f('m5_conv_metas') || '—'}</span>
+                  </div>
+                  <div>
+                    <strong className="text-slate-800">Lacuna apontada para o próximo nível:</strong>{' '}
+                    <span className="text-slate-700">{f('m5_conv_lacuna') || '—'}</span>
+                  </div>
+                  {f('m5_conv_objecao') && (
+                    <div>
+                      <strong className="text-slate-800">Objeção tratada:</strong>{' '}
+                      <span className="text-slate-700">{f('m5_conv_objecao')}</span>
+                    </div>
+                  )}
                 </div>
-                <div>
-                  <strong className="text-slate-800">Prazo de revisita:</strong>{' '}
-                  <span className="text-slate-700">{f('m5_conv_prazo') || '—'}</span>
-                </div>
-                <div>
-                  <strong className="text-slate-800">Cenário:</strong>{' '}
-                  <span className="text-slate-700">{f('m5_cenario') || '—'}</span>
+
+                {/* Plano de 90 Dias */}
+                <div className="p-4 bg-emerald-50/80 rounded-xl border border-emerald-200 text-xs sm:text-sm text-emerald-950 space-y-2">
+                  <span className="text-xs font-bold text-emerald-900 uppercase block mb-1">
+                    Plano de 90 Dias Estruturado:
+                  </span>
+                  <div>
+                    <strong>Semanas 1 a 4 (Atacar 1ª lacuna):</strong>
+                    <p className="mt-0.5 text-slate-800">{f('m5_p90_sem1_4') || '—'}</p>
+                  </div>
+                  <div>
+                    <strong>Semanas 5 a 8 (Resultados mensuráveis):</strong>
+                    <p className="mt-0.5 text-slate-800">{f('m5_p90_sem5_8') || '—'}</p>
+                  </div>
+                  <div>
+                    <strong>Semanas 9 a 12 (Retomada com evidências):</strong>
+                    <p className="mt-0.5 text-slate-800">{f('m5_p90_sem9_12') || '—'}</p>
+                  </div>
+                  {f('m5_atualizacao_mensal') && (
+                    <div className="pt-2 border-t border-emerald-200/60 text-xs">
+                      <strong>Atualização mensal planejada:</strong> <em>"{f('m5_atualizacao_mensal')}"</em>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
 
-            {/* Plano de 90 Dias */}
-            <div>
-              {renderSectionHeader('Meu Plano de 90 Dias')}
-              <div className="p-4 bg-emerald-50/80 rounded-xl border border-emerald-200 text-xs sm:text-sm text-emerald-950 whitespace-pre-line leading-relaxed font-medium">
-                {f('m5_plano90') || 'Preencha no Módulo 5 após a conversa de carreira.'}
-              </div>
-            </div>
-
-            {/* Assinatura Final */}
+            {/* Encerramento com citação oficial */}
             <div className="mt-8 pt-6 border-t border-slate-200 text-center">
-              <p className="text-xs sm:text-sm italic text-slate-600 font-medium">
-                "Se você não achar que está pronto, ninguém mais vai achar."
+              <p className="text-sm sm:text-base italic text-slate-800 font-semibold">
+                "Se você não achar que está pronto, ninguém mais vai achar"
               </p>
               <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-2">
-                Método PONTE · Carlos E R Martins · mentordelogistica.com.br
+                Método PONTE · Carlos Martins · mentordelogistica.com.br
               </p>
             </div>
           </div>
